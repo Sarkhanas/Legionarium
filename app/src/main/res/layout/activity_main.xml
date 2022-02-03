@@ -27,7 +27,7 @@
         android:id="@+id/toolbar2"
         android:layout_width="411dp"
         android:layout_height="91dp"
-        android:background="@drawable/headL"
+        android:background="@drawable/headlow"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,8 +39,8 @@
         android:id="@+id/imageButton5"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background=""
-        app:srcCompat="@drawable/Listing"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/lister"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="35dp" />
 
@@ -48,7 +48,7 @@
         android:id="@+id/imageButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background=""
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/scroll"
         tools:layout_editor_absoluteX="337dp"
         tools:layout_editor_absoluteY="35dp" />
