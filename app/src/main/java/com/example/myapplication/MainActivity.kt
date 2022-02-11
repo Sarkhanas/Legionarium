@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private var font_counter: TextInputLayout? = null
     private var font_counterEditor: TextInputEditText? = null
     private var text: EditText? = null
+    private var counter: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +103,13 @@ class MainActivity : AppCompatActivity() {
             else
             {
                 var font: String = font_counterEditor?.hint.toString()
+                counter = font.toInt()
             }
+        }
+
+        plus_btn?.setOnClickListener {
+            counter?.plus(1)
+            font_counterEditor?.hint = counter.toString()
         }
     }
 }
