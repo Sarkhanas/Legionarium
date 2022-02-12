@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private var font_counterEditor: TextInputEditText? = null
     private var text: EditText? = null
     private var counter: Int? = null
+    private var spinner: Spinner? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,16 @@ class MainActivity : AppCompatActivity() {
         font_icon = findViewById(R.id.imageView2)//Invisible
         fontSize_icon = findViewById(R.id.imageView3)//Invisible
         bold_icon = findViewById(R.id.imageView4)//Invisible
+        spinner = findViewById(R.id.spinner)//Invisible
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.fontNames,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner?.adapter = adapter
+        }
 
         search_btn?.setOnClickListener{
             Toast.makeText(this, "in developing", Toast.LENGTH_LONG).show()
@@ -102,14 +114,28 @@ class MainActivity : AppCompatActivity() {
                 font_counterEditor?.hint = "14"
             else
             {
-                var font: String = font_counterEditor?.hint.toString()
-                counter = font.toInt()
+                val fontSize: String = font_counterEditor?.hint.toString()
+                counter = fontSize.toInt()
             }
         }
 
         plus_btn?.setOnClickListener {
             counter?.plus(1)
             font_counterEditor?.hint = counter.toString()
+        }
+
+        minus_btn?.setOnClickListener {
+            counter?.minus(1)
+            font_counterEditor?.hint = counter.toString()
+        }
+
+        bold_check?.setOnClickListener {
+            val checked = bold_check?.isChecked()
+            if (checked == true) {
+                text?.setTypeface(null, Typeface.BOLD)
+            } else {
+                text?.setTypeface(null, Typeface.NORMAL)
+            }
         }
     }
 }
