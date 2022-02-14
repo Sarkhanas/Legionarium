@@ -1,9 +1,13 @@
 package com.example.myapplication
 
+import android.graphics.Point
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Display
 import android.view.View
+import android.view.Window
 import android.widget.*
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -22,15 +26,24 @@ class MainActivity : AppCompatActivity() {
     private var fontSize_icon: ImageView? = null
     private var bold_icon: ImageView? = null
     private var bold_check: CheckBox? = null
-    private var font_counter: TextInputLayout? = null
     private var font_counterEditor: TextInputEditText? = null
     private var text: EditText? = null
-    private var counter: Int? = null
+    private var counter: Int = 14
     private var spinner: Spinner? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val display: Display = windowManager.defaultDisplay
+        val point = Point()
+        display.getSize(point)
+        val screenWidth: Int = point.x
+        val screenHeight: Int = point.y
+
+// Теперь получим необходимую информацию
+        val width = Integer.toString(screenWidth)
+        val height = Integer.toString(screenHeight)
 
         arrowDown_btn = findViewById(R.id.imageButton)//Visible
         search_btn = findViewById(R.id.imageButton2)//Visible
@@ -42,13 +55,13 @@ class MainActivity : AppCompatActivity() {
         plus_btn = findViewById(R.id.imageButton9)//Invisible
         minus_btn = findViewById(R.id.imageButton10)//Invisible
         bold_check = findViewById(R.id.checkBox)//Invisible
-        font_counter = findViewById(R.id.textInput)//Invisible
         font_counterEditor = findViewById(R.id.textEdit)//Invisible
         text = findViewById(R.id.editTextTextMultiLine)//Visible
         font_icon = findViewById(R.id.imageView2)//Invisible
         fontSize_icon = findViewById(R.id.imageView3)//Invisible
         bold_icon = findViewById(R.id.imageView4)//Invisible
         spinner = findViewById(R.id.spinner)//Invisible
+
 
         ArrayAdapter.createFromResource(
             this,
@@ -79,10 +92,11 @@ class MainActivity : AppCompatActivity() {
             plus_btn?.visibility = View.GONE
             minus_btn?.visibility = View.GONE
             bold_check?.visibility = View.GONE
-            font_counter?.visibility = View.GONE
             font_icon?.visibility = View.GONE
             fontSize_icon?.visibility = View.GONE
+            font_counterEditor?.visibility = View.GONE
             bold_icon?.visibility = View.GONE
+            spinner?.visibility = View.GONE
         }
 
         bookmarks_btn?.setOnClickListener{
@@ -105,13 +119,14 @@ class MainActivity : AppCompatActivity() {
             plus_btn?.visibility = View.VISIBLE
             minus_btn?.visibility = View.VISIBLE
             bold_check?.visibility = View.VISIBLE
-            font_counter?.visibility = View.VISIBLE
             font_icon?.visibility = View.VISIBLE
             fontSize_icon?.visibility = View.VISIBLE
+            font_counterEditor?.visibility = View.VISIBLE
             bold_icon?.visibility = View.VISIBLE
+            spinner?.visibility = View.VISIBLE
 
             if (font_counterEditor?.hint?.toString()?.trim()?.equals("")!!)
-                font_counterEditor?.hint = "14"
+                font_counterEditor?.hint = counter.toString()
             else
             {
                 val fontSize: String = font_counterEditor?.hint.toString()
@@ -120,13 +135,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         plus_btn?.setOnClickListener {
-            counter?.plus(1)
-            font_counterEditor?.hint = counter.toString()
+            font_counterEditor?.hint = counter.plus(1).toString()
+            counter = counter.plus(1)
         }
 
         minus_btn?.setOnClickListener {
-            counter?.minus(1)
-            font_counterEditor?.hint = counter.toString()
+            if (font_counterEditor?.hint != "1")
+            {
+                font_counterEditor?.hint = counter.minus(1).toString()
+                counter = counter.minus(1)
+            } else {
+                font_counterEditor?.hint = "1"
+                counter = 1
+            }
+
         }
 
         bold_check?.setOnClickListener {
