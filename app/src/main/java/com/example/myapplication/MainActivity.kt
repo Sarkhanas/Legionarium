@@ -1,16 +1,11 @@
 package com.example.myapplication
 
-import android.graphics.Point
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.Display
 import android.view.View
-import android.view.Window
 import android.widget.*
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 class MainActivity : AppCompatActivity() {
     private var list_btn: ImageButton? = null
@@ -27,23 +22,14 @@ class MainActivity : AppCompatActivity() {
     private var bold_icon: ImageView? = null
     private var bold_check: CheckBox? = null
     private var font_counterEditor: TextInputEditText? = null
-    private var text: EditText? = null
+    private var text: TextView? = null
     private var counter: Int = 14
     private var spinner: Spinner? = null
+    private var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val display: Display = windowManager.defaultDisplay
-        val point = Point()
-        display.getSize(point)
-        val screenWidth: Int = point.x
-        val screenHeight: Int = point.y
-
-// Теперь получим необходимую информацию
-        val width = Integer.toString(screenWidth)
-        val height = Integer.toString(screenHeight)
 
         arrowDown_btn = findViewById(R.id.imageButton)//Visible
         search_btn = findViewById(R.id.imageButton2)//Visible
@@ -62,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         bold_icon = findViewById(R.id.imageView4)//Invisible
         spinner = findViewById(R.id.spinner)//Invisible
 
+        text?.setTypeface(Typeface.createFromAsset(resources.assets, "fonts/TimesNewRoman.ttf"))
 
         ArrayAdapter.createFromResource(
             this,
@@ -137,6 +124,7 @@ class MainActivity : AppCompatActivity() {
         plus_btn?.setOnClickListener {
             font_counterEditor?.hint = counter.plus(1).toString()
             counter = counter.plus(1)
+            text?.setTextSize(counter.toFloat())
         }
 
         minus_btn?.setOnClickListener {
@@ -147,6 +135,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 font_counterEditor?.hint = "1"
                 counter = 1
+                text?.setTextSize(counter.toFloat())
             }
 
         }
@@ -159,5 +148,35 @@ class MainActivity : AppCompatActivity() {
                 text?.setTypeface(null, Typeface.NORMAL)
             }
         }
+
+        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedItem = spinner?.selectedItem
+                if (selectedItem!!.equals("Times New Roman")) {
+                    text?.setTypeface(Typeface.createFromAsset(resources.assets, "fonts/TimesNewRoman.ttf"))
+                }
+                if (selectedItem.equals("Calibri")) {
+                    text?.setTypeface(Typeface.createFromAsset(resources.assets, "fonts/Calibri.ttf"))
+                }
+                if (selectedItem.equals("Roboto")) {
+                    text?.setTypeface(Typeface.createFromAsset(resources.assets, "fonts/Roboto.ttf"))
+                }
+            }
+
+        }
+    }
+
+    override fun onBackPressed() {
+
+        if (backPressedTime.plus(2000) > System.currentTimeMillis()) {
+            super.onBackPressed()
+            return
+        } else {
+            Toast.makeText(this, "Press a second time to exit!", Toast.LENGTH_LONG).show()
+        }
+
+        backPressedTime = System.currentTimeMillis()
     }
 }

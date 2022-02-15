@@ -5,4 +5,5 @@
         <item>Calibri</item>
         <item>Roboto</item>
     </string-array>
+    <string name="welcomText">Welcome to Librarium!\nLibrarium is an android program for reading books, if you want start reading press \'Library\' button(second button on the right).\n Have a good time!</string>
 </resources>
